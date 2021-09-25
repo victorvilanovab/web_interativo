@@ -1,0 +1,140 @@
+// TODO(you): Modify the class in whatever ways necessary to implement
+// the tvshow behavior.
+//
+// You may need to do things such as:
+// - Changing the constructor parameters
+// - Changing the code in the constructor
+// - Adding methods
+// - Adding additional fields
+// - Include and bind eventListeners
+
+class TVShow {
+  constructor(containerElement, TV_SHOWS, i) {
+    this.containerElement = containerElement;
+
+    const section = document.createElement('section');
+    section.className = "serie";
+
+      //section esquerda
+      const section_esq = document.createElement('section');
+      section_esq.className = 'img';
+
+      const div_esq = document.createElement('div');
+      div_esq.className = "col1";
+
+      const img_esq = document.createElement('img');
+      try{
+      img_esq.src = TV_SHOWS[i]["image"]["medium"];
+      }
+      catch{
+        img_esq.src = "images/no-image-show.png";
+      }
+
+      const select_esq = document.createElement('select');
+      select_esq.className = "wselect";
+      select_esq.addEventListener('change',click);
+      //select_esq.addEventListener('change',motion);
+      select_esq.style = "width: 160px; height: 30px;";
+      
+      
+      const seasons = TV_SHOWS[0]["seasons"];
+    
+  
+
+      for (let n=0; n < Number(seasons.length + 1); n++ ){
+        const seasonsn = document.createElement("option");
+        if(n===0){
+            seasonsn.textContent =  "Season";
+            seasonsn.value = "s"+n_series_add+"t"+n;
+        }
+        else{
+        seasonsn.textContent =  "Season " + Number(n);
+        seasonsn.value = "s"+n_series_add+"t"+n;
+        }
+        select_esq.appendChild(seasonsn);
+    }
+    
+
+
+
+      //section direita
+      const section_dir = document.createElement('section');
+      section_esq.className = 'text';
+
+      const div_dir = document.createElement('div');
+      div_dir.className = "col2";
+      div_dir.id = "serie" + n_series_add;
+
+      const h1_dir = document.createElement('h1');
+      h1_dir.textContent = TV_SHOWS[i]["name"];
+
+      const p_dir_1 = document.createElement('p');
+      p_dir_1.className = "blue";
+      const link = document.createElement("a");
+      link.href = TV_SHOWS[0]["officialSite"];
+      link.textContent = "Premiered at " + TV_SHOWS[i]["channel"] + ' on ' + TV_SHOWS[i]["premiered"] +' ('+ TV_SHOWS[i]["status"] + ") ";
+
+
+      let doc = new DOMParser().parseFromString(TV_SHOWS[i]["summary"], 'text/html');
+      const p_dir_2 = doc.body.firstChild;
+      p_dir_2.className = "text";
+      //p_dir_2.textContent = TV_SHOWS[i]["summary"];
+
+      const p_dir_3 = document.createElement('p');
+      p_dir_3.className = "genres";
+      const generos = TV_SHOWS[i]["genres"];
+      p_dir_3.textContent = "Genres: ";
+      for (let n=0; n < generos.length; n++ ){
+        const genn = document.createElement("em");
+        genn.textContent = " "+ generos[n] + " ";
+        p_dir_3.appendChild(genn);
+      }
+
+
+
+      const temporadas = document.createElement('section');
+      temporadas.className = "temporadas";
+      temporadas.setAttribute('id', 'temporadas_serie'+n_series_add);
+
+
+    
+      this.containerElement.append(section);
+
+      section.appendChild(section_esq);
+      section.appendChild(section_dir);
+
+      section_esq.appendChild(div_esq);
+      div_esq.appendChild(img_esq);
+      div_esq.appendChild(select_esq);
+
+      section_dir.appendChild(div_dir);
+      div_dir.appendChild(h1_dir);
+      div_dir.appendChild(p_dir_1);
+      p_dir_1.appendChild(link);
+      div_dir.appendChild(p_dir_2);
+      div_dir.appendChild(p_dir_3);
+      div_dir.appendChild(temporadas);
+      
+
+      }
+
+  }
+
+  function click(event){
+    const class_temp = document.getElementsByClassName("temporada");
+    console.log(class_temp);
+    console.log(class_temp.length);
+    var n = class_temp.length;
+    console.log(class_temp[0].style.display);
+
+    for (var i=0; i<n; i++) {
+        class_temp[i].style.display = "none";
+    }
+    if ( Number(event.target.value.substring(3,4)) === 0 ){
+        return
+    }
+    else {
+        const section_temp = document.getElementById(event.target.value);
+        section_temp.style.display = "block";
+    }
+}
